@@ -1,0 +1,47 @@
+.admin-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.alert-card {
+    background-color: #fff3f3;
+    border-left: 6px solid #E53935;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.alert-card h3 { color: #E53935; margin-bottom: 10px; }
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.card-action {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.btn-admin {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #E53935;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-admin:hover { background-color: #c62828; }
+
+.btn-download { background-color: #2e7d32; } /* Verde para o download */
+.btn-download:hover { background-color: #1b5e20; }
