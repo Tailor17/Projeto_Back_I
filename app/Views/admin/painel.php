@@ -46,13 +46,13 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
             <div class="card-action">
                 <h3>Cardápio da Semana</h3>
                 <p>Selecione os produtos que estarão disponíveis para os clientes.</p>
-                <a href="selecionar_semana.php" class="btn-admin">Gerenciar Disponibilidade</a>
+                <a href="/app/Controllers/gerenciar_semana.php" class="btn-admin">Gerenciar Disponibilidade</a>
             </div>
 
             <div class="card-action">
                 <h3>Produtos</h3>
                 <p>Cadastre novas frutas, altere preços e fotos.</p>
-                <a href="produtos_lista.php" class="btn-admin">Ir para CRUD de Produtos</a>
+                <a href="/app/Controllers/listar_produtos.php" class="btn-admin">Ir para CRUD de Produtos</a>
             </div>
 
             <div class="card-action">
