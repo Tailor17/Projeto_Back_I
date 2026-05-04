@@ -96,7 +96,7 @@
     padding: 12px;
     background-color: white;
     color: #E53935;
-    border: none;
+    border: 1px solid #ffffff;
     border-radius: 6px;
     font-size: 16px;
     font-weight: bold;
@@ -107,5 +107,24 @@
 
 .btn-entrar:hover {
     background-color: #ffebee;
+    transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+}
+
+.btn-finalizar {
+    width: 100%;
+    padding: 12px;
+    background-color: #E53935;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-finalizar:hover {
+    background-color: #42d32f;
     transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
 }

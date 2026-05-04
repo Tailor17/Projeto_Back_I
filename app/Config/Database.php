@@ -14,7 +14,6 @@ class Database {
         $this->conn = null;
 
         try {
-            // Atualizamos a string de conexão (DSN) para incluir a porta
             $dsn = "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name . ";charset=utf8";
             
             $this->conn = new PDO($dsn, $this->username, $this->password);

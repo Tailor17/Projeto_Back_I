@@ -33,13 +33,17 @@
                 </div>
 
                 <button type="submit" class="btn-entrar">ENTRAR</button>
-                
+
+                <div style="text-align: center; margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.4); padding-top: 15px;">
+                    <p style="color: #fff; margin-bottom: 5px;">Ainda não é cliente?</p>
+                    <a href="/app/Views/cadastro.php" style="color: #fff; font-weight: bold; text-decoration: underline; font-size: 16px;">Criar minha conta na TDY</a>
+                </div>
             </form>
         </div>
     </main>
 
     <footer class="main-footer">
-        <p>&copy; TDY Morangos - Entregas de Sexta-feira</p>
+        <p>&copy; TDY Morangos</p>
     </footer>
 
 </body>

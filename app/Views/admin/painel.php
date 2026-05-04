@@ -21,13 +21,14 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
             <h1>PAINEL DO ADMINISTRADOR</h1>
             <div class="user-info">
                 <span>Olá, <?php echo $_SESSION['usuario_nome']; ?></span>
-                <a href="../Controllers/logout.php" class="btn-sair-link">Sair</a>
+                <a href="../../Controllers/logout.php" class="btn-sair-link">Sair</a>
             </div>
         </div>
     </header>
 
     <main class="admin-container">
         
+    
         <?php if (!empty($alertas)): ?>
         <section class="alert-section">
             <div class="alert-card">
@@ -52,13 +53,19 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
             <div class="card-action">
                 <h3>Produtos</h3>
                 <p>Cadastre novas frutas, altere preços e fotos.</p>
-                <a href="/app/Controllers/listar_produtos.php" class="btn-admin">Ir para CRUD de Produtos</a>
+                <a href="/app/Controllers/listar_produtos.php" class="btn-admin">Produtos Cadastrados</a>
             </div>
 
             <div class="card-action">
                 <h3>Pedidos da Semana</h3>
-                <p>Veja quem comprou e prepare as entregas de sexta-feira.</p>
+                <p>Veja quem comprou e prepare as entregas da semana.</p>
                 <a href="../Controllers/gerar_relatorio.php" class="btn-admin btn-download">Baixar Pedidos (CSV)</a>
+            </div>
+
+            <div class="card-action">
+                <h3>Gerenciar Pedidos</h3>
+                <p>Veja os pedidos realizados.</p>
+                <a href="/app/Controllers/listar_pedidos.php" class="btn-admin">Ver Pedidos</a>
             </div>
 
         </section>

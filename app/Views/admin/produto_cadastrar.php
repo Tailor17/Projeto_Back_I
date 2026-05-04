@@ -24,7 +24,7 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
             <form action="/app/Controllers/processa_produto.php" method="POST" enctype="multipart/form-data" class="login-form">
                 
                 <div class="form-group">
-                    <label for="nome_fruta">Nome da Fruta</label>
+                    <label for="nome_fruta">Nome do Produto</label>
                     <input type="text" id="nome_fruta" name="nome_fruta" placeholder="Ex: Morango Bandeja 250g" required>
                 </div>
 

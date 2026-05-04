@@ -1,82 +1,139 @@
 <?php
 
 class Usuario {
-    // Conexão com o banco de dados e nome da tabela
     private $conn;
-    private $table_name = "Usuarios";
+    private $table_name = "Usuarios"; // Deixei minúsculo para evitar o erro 1146
 
-    // Propriedades do objeto (idênticas às colunas do banco)
+    // Propriedades principais do objeto
     public $id;
     public $nome;
     public $email;
     public $senha;
-    public $endereco_padrao;
-    public $foto_perfil;
     public $tipo_usuario;
+    
+    // Propriedades de entrega
+    public $telefone;
+    public $rua;
+    public $numero;
+    public $bairro;
+    public $cidade;
 
-    // O construtor recebe a conexão do banco de dados (que fizemos no Database.php)
     public function __construct($db) {
         $this->conn = $db;
     }
 
     // =======================================================
-    // MÉTODO 1: CADASTRAR (INSERT)
+    // MÉTODO 1: CADASTRAR (Novo cliente)
     // =======================================================
-    public function cadastrar() {
-        // Query SQL utilizando "Named Parameters" (:nome, :email) para segurança contra SQL Injection
+    public function cadastrar($nome, $email, $senha_hash, $telefone, $rua, $numero, $bairro, $cidade) {
+        // O tipo_usuario = 2 é fixo (Cliente)
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET nome = :nome, email = :email, senha = :senha, tipo_usuario = :tipo_usuario";
-
-        // Prepara a query (Exigência do Requisito 5)
-        $stmt = $this->conn->prepare($query);
-
-        // Limpa os dados para evitar injeção de scripts maliciosos (XSS)
-        $this->nome = htmlspecialchars(strip_tags($this->nome));
-        $this->email = htmlspecialchars(strip_tags($this->email));
+                  (nome, email, senha, telefone, rua, numero, bairro, cidade, tipo_usuario) 
+                  VALUES (:nome, :email, :senha, :telefone, :rua, :numero, :bairro, :cidade, 2)";
         
-        // Gera o Hash da senha (Exigência do Requisito 4)
-        $senha_hash = password_hash($this->senha, PASSWORD_BCRYPT);
-
-        // Faz o bind (vínculo) dos valores aos parâmetros da query
-        $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":senha", $senha_hash); // Salvamos o hash, NUNCA a senha em texto puro
-        $stmt->bindParam(":tipo_usuario", $this->tipo_usuario);
-
-        // Executa a query (Exigência do Requisito 5)
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
+        $stmt = $this->conn->prepare($query);
+        
+        // Limpeza básica para evitar tags HTML no nome
+        $nome_limpo = htmlspecialchars(strip_tags($nome));
+        
+        $stmt->bindParam(':nome', $nome_limpo);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':senha', $senha_hash); // Recebe a senha já criptografada pelo Controller
+        $stmt->bindParam(':telefone', $telefone);
+        $stmt->bindParam(':rua', $rua);
+        $stmt->bindParam(':numero', $numero);
+        $stmt->bindParam(':bairro', $bairro);
+        $stmt->bindParam(':cidade', $cidade);
+        
+        return $stmt->execute();
     }
 
     // =======================================================
     // MÉTODO 2: FAZER LOGIN (SELECT e Validação)
     // =======================================================
     public function login($email_digitado, $senha_digitada) {
-        // Busca o usuário pelo e-mail
-        $query = "SELECT id, nome, senha, tipo_usuario FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
+        // Buscamos também os dados de endereço para poder usar na tela de entrega depois!
+        $query = "SELECT id, nome, senha, tipo_usuario, telefone, rua, numero, bairro, cidade 
+                  FROM " . $this->table_name . " 
+                  WHERE email = ? LIMIT 0,1";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $email_digitado);
         $stmt->execute();
 
-        // Verifica se encontrou algum e-mail correspondente
         if($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Verifica se a senha digitada bate com o Hash salvo no banco (password_verify)
+            // Verifica se a senha digitada bate com o Hash salvo no banco
             if(password_verify($senha_digitada, $row['senha'])) {
                 
-                // Se a senha estiver correta, preenche as propriedades do objeto com os dados do banco
+                // Preenche as propriedades
                 $this->id = $row['id'];
                 $this->nome = $row['nome'];
+                $this->email = $row['email'];
                 $this->tipo_usuario = $row['tipo_usuario'];
+                $this->telefone = $row['telefone'] ?? '';
+                $this->rua = $row['rua'] ?? '';
+                $this->numero = $row['numero'] ?? '';
+                $this->bairro = $row['bairro'] ?? '';
+                $this->cidade = $row['cidade'] ?? '';
                 
-                return true; // Login com sucesso!
+                return true; 
             }
         }
-        return false; // Falha no login (e-mail ou senha incorretos)
+        return false; 
     }
+
+    // =======================================================
+    // BUSCAR USUÁRIO POR ID (Para pegar o endereço)
+    // =======================================================
+    public function buscarPorId($id) {
+        $query = "SELECT nome, email, telefone, rua, numero, bairro, cidade 
+                  FROM " . $this->table_name . " 
+                  WHERE id = ? LIMIT 1";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    
+    // =======================================================
+    // Atualizar o perfil do usuário
+    // =======================================================
+
+public function atualizarPerfil($id, $nome, $email, $telefone, $rua, $numero, $bairro, $cidade, $senha = null) {
+    $query = "UPDATE " . $this->table_name . " 
+              SET nome = :nome, email = :email, telefone = :telefone, rua = :rua, 
+                  numero = :numero, bairro = :bairro, cidade = :cidade";
+    
+    if ($senha) {
+        $query .= ", senha = :senha";
+    }
+
+    $query .= " WHERE id = :id";
+    
+    $stmt = $this->conn->prepare($query);
+    
+    $nome_limpo = htmlspecialchars(strip_tags($nome));
+    
+    $stmt->bindParam(':nome', $nome_limpo);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':telefone', $telefone);
+    $stmt->bindParam(':rua', $rua);
+    $stmt->bindParam(':numero', $numero);
+    $stmt->bindParam(':bairro', $bairro);
+    $stmt->bindParam(':cidade', $cidade);
+    $stmt->bindParam(':id', $id);
+    
+    if ($senha) {
+        $stmt->bindParam(':senha', $senha);
+    }
+    
+    return $stmt->execute();
+}
+
 }
 ?>

@@ -43,5 +43,17 @@
 
 .btn-admin:hover { background-color: #c62828; }
 
+.btn-editar_admin {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #E53935;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+
 .btn-download { background-color: #2e7d32; } /* Verde para o download */
 .btn-download:hover { background-color: #1b5e20; }

@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../Views/admin/painel.php");
         } else {
             // É Cliente (0) -> Vai para a Vitrine de Frutas
-            header("Location: ../Views/cliente/vitrine.php");
+            header("Location: /index.php");
         }
         exit; // Sempre use exit após um header("Location") para parar a execução do script
         

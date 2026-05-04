@@ -16,7 +16,7 @@ class Produto {
         $this->conn = $db;
     }
 
-    // [1] CADASTRAR (Create)
+    // [1] CADASTRAR
     public function cadastrar() {
         $query = "INSERT INTO " . $this->table_name . " SET nome_fruta = :nome, preco = :preco, foto_produto = :foto";
         $stmt = $this->conn->prepare($query);
@@ -26,7 +26,7 @@ class Produto {
         return $stmt->execute();
     }
 
-    // [2] LISTAR TODOS (Read - All)
+    // [2] LISTAR TODOS
     public function listarTodos() {
         $query = "SELECT * FROM " . $this->table_name . " ORDER BY nome_fruta ASC";
         $stmt = $this->conn->prepare($query);
@@ -34,7 +34,7 @@ class Produto {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // [3] BUSCAR POR ID (Read - One)
+    // [3] BUSCAR POR ID
     public function buscarPorId($id) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
@@ -44,16 +44,19 @@ class Produto {
     }
 
     // [4] ATUALIZAR (Update)
-    public function atualizar() {
-        $query = "UPDATE " . $this->table_name . " SET nome_fruta = :nome, preco = :preco";
-        if (!empty($this->foto_produto)) { $query .= ", foto_produto = :foto"; }
-        $query .= " WHERE id = :id";
+    public function atualizar($id, $nome_fruta, $preco, $foto_produto) {
+        
+        // A query limpa, atualizando os 3 campos sempre (já que o Controller garante qual é a foto certa)
+        $query = "UPDATE " . $this->table_name . " SET nome_fruta = :nome, preco = :preco, foto_produto = :foto WHERE id = :id";
         
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':nome', $this->nome_fruta);
-        $stmt->bindParam(':preco', $this->preco);
-        $stmt->bindParam(':id', $this->id);
-        if (!empty($this->foto_produto)) { $stmt->bindParam(':foto', $this->foto_produto); }
+        
+        // Substituindo as tags pelas variáveis que vieram do Controller
+        $stmt->bindParam(':nome', $nome_fruta);
+        $stmt->bindParam(':preco', $preco);
+        $stmt->bindParam(':foto', $foto_produto);
+        $stmt->bindParam(':id', $id);
+        
         return $stmt->execute();
     }
 
@@ -65,7 +68,7 @@ class Produto {
         return $stmt->execute();
     }
 
-    // [6] ALERTAS DE PREVISÃO (Lógica Extra)
+    // [6] ALERTAS DE PREVISÃO (Lógica Extra) (ainda não implementada no Controller)
     public function buscarAlertasPrevisao() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE disponivel_na_semana = 0 AND previsao_disponibilidade <= CURRENT_DATE AND previsao_disponibilidade IS NOT NULL";
         $stmt = $this->conn->prepare($query);
@@ -97,4 +100,15 @@ class Produto {
 
         // O PDO é inteligente e substitui os "?" pelos IDs que vieram no array
         return $stmt->execute($ids_array);
+    }
+
+    // =======================================================
+    // MÉTODO 9: LISTAR APENAS PRODUTOS DISPONÍVEIS NA SEMANA
+    // =======================================================
+    public function listarDisponiveisSemana() {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE disponivel_na_semana = 1 ORDER BY nome_fruta ASC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }}
