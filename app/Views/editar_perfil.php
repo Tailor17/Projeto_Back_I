@@ -47,7 +47,7 @@
                     <input type="password" name="senha">
                 </div>
                 <button type="submit" class="btn-entrar" style="background-color: #f39c12; color: white;">SALVAR ALTERAÇÕES</button>
-                <a href="/app/Controllers/listar_produtos.php" style="display:block; margin-top:15px; color:white;">Cancelar e Voltar</a>
+                <a href="/index.php" style="display:block; margin-top:15px; color:white;">Cancelar e Voltar</a>
             </form>
         </div>
     </main>

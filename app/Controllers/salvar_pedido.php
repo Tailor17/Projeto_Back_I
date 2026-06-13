@@ -3,6 +3,7 @@ session_start();
 require_once '../Config/Database.php';
 require_once '../Models/Pedido.php';
 require_once '../Models/Produto.php';
+require_once '../Models/Usuario.php';
 
 // 1. Define o endereço
 $endereco_entrega = "";
@@ -29,7 +30,15 @@ if (!empty($_SESSION['carrinho'])) {
 }
 
 $nome_cliente = $_SESSION['usuario_nome'] ?? 'Cliente TDY'; 
-$telefone_cliente = $_SESSION['usuario_telefone'] ?? 'Não informado'; 
+$telefone_cliente = $_SESSION['usuario_telefone'] ?? null;
+if ((empty($telefone_cliente) || $telefone_cliente === '') && isset($_SESSION['usuario_id'])) {
+    $usuario_model = new Usuario($db);
+    $dados_usuario = $usuario_model->buscarPorId($_SESSION['usuario_id']);
+    $telefone_cliente = $dados_usuario['telefone'] ?? 'Não informado';
+}
+if (empty($telefone_cliente)) {
+    $telefone_cliente = 'Não informado';
+}
 
 // 3. Salva o pedido principal e recebe o ID de volta
 $id_novo_pedido = $pedido_model->criar($nome_cliente, $telefone_cliente, $valor_total, $endereco_entrega);

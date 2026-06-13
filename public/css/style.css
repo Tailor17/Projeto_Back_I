@@ -6,6 +6,21 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Layout base para garantir rodapé colado no final da tela */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
 /* Fundo geral da página */
 .login-page {
     display: flex;
@@ -15,12 +30,23 @@
 }
 
 /* Cabeçalho e Rodapé */
-.main-header, .main-footer {
+.main-header{
     background-color: #E53935; /* Um vermelho mais vivo e moderno */
     color: white;
     text-align: center;
     padding: 15px 0;
 }
+
+.main-footer {
+    background-color: #E53935;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: auto;
+
+    
+}
+
 
 .header-content {
     display: flex;

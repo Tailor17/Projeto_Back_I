@@ -14,7 +14,7 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
 </head>
 <body class="login-page"> <header class="main-header">
         <div class="header-content">
-            <h1>CADASTRAR NOVA FRUTA</h1>
+            <h1>CADASTRAR NOVO PRODUTO</h1>
         </div>
     </header>
 

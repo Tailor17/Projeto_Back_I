@@ -13,16 +13,28 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
     <title>Painel Administrativo - TDY Morangos</title>
     <link rel="stylesheet" href="../../../public/css/style.css">
     <link rel="stylesheet" href="../../../public/css/admin.css"> </head>
+    <style>
+        .btn-login { display: inline-block; margin-left: 12px; color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
+        .btn-login:hover { background: white; color: #E53935; }
+    </style>
 <body>
 
     <header class="main-header">
         <div class="header-content">
             <img src="../../../public/img/morango1.png" alt="Logo" class="logo-img">
             <h1>PAINEL DO ADMINISTRADOR</h1>
-            <div class="user-info">
-                <span>Olá, <?php echo $_SESSION['usuario_nome']; ?></span>
-                <a href="../../Controllers/logout.php" class="btn-sair-link">Sair</a>
+                <div class="user-info" style="position: absolute; top: 20px; left: 20px; display: flex; align-items: center; gap: 10px;">
+                <?php if (!empty($_SESSION['usuario_nome'])): ?>
+                    <span>Olá, <?php echo $_SESSION['usuario_nome']; ?></span>
+                    <a href="/app/Controllers/logout.php" class="btn-login">Sair</a>
+                <?php else: ?>
+                    <span>Olá, visitante</span>
+                    <a href="/app/Views/login.php" class="btn-login">Login</a>
+                <?php endif; ?>
             </div>
+        
+        <a href="/index.php" class="btn-login" style="position: absolute; top: 20px; right: 20px;">Voltar para Vitrine</a>
+            
         </div>
     </header>
 
@@ -56,11 +68,6 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
                 <a href="/app/Controllers/listar_produtos.php" class="btn-admin">Produtos Cadastrados</a>
             </div>
 
-            <div class="card-action">
-                <h3>Pedidos da Semana</h3>
-                <p>Veja quem comprou e prepare as entregas da semana.</p>
-                <a href="../Controllers/gerar_relatorio.php" class="btn-admin btn-download">Baixar Pedidos (CSV)</a>
-            </div>
 
             <div class="card-action">
                 <h3>Gerenciar Pedidos</h3>

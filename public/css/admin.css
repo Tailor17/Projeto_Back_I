@@ -16,9 +16,11 @@
 .alert-card h3 { color: #E53935; margin-bottom: 10px; }
 
 .action-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 25px;
+    align-items: stretch;
+    justify-content: space-between;
 }
 
 .card-action {
@@ -28,6 +30,8 @@
     text-align: center;
     box-shadow: 0 6px 12px rgba(0,0,0,0.05);
     border: 1px solid #eee;
+    flex: 1 1 300px;
+    min-width: 260px;
 }
 
 .btn-admin {

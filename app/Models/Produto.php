@@ -55,6 +55,7 @@ class Produto {
         $stmt->bindParam(':nome', $nome_fruta);
         $stmt->bindParam(':preco', $preco);
         $stmt->bindParam(':foto', $foto_produto);
+
         $stmt->bindParam(':id', $id);
         
         return $stmt->execute();

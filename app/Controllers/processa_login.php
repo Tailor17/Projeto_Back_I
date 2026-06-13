@@ -26,6 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Se o login for true (senha bateu com o hash no banco), salvamos os dados na sessão
         $_SESSION['usuario_id'] = $usuario->id;
         $_SESSION['usuario_nome'] = $usuario->nome;
+        // Armazena telefone e endereço para uso em pedidos
+        $_SESSION['usuario_telefone'] = $usuario->telefone ?? '';
+        $_SESSION['usuario_rua'] = $usuario->rua ?? '';
+        $_SESSION['usuario_numero'] = $usuario->numero ?? '';
+        $_SESSION['usuario_bairro'] = $usuario->bairro ?? '';
+        $_SESSION['usuario_cidade'] = $usuario->cidade ?? '';
         $_SESSION['tipo_usuario'] = $usuario->tipo_usuario;
 
         // 5. Redirecionamento Inteligente baseado no nível de acesso

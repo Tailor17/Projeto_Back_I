@@ -10,6 +10,23 @@
         .lista-itens { background: #f9f9f9; padding: 15px; border-radius: 5px; border-left: 4px solid #E53935; }
         .lista-itens li { margin-bottom: 5px; list-style-type: none; }
         .btn-imprimir { background: #333; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; float: right; margin-bottom: 20px;}
+        .botoes-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        @media print {
+            .esconder-na-impressao { 
+                display: none !important; 
+ 
+            }
+            .botoes-topo {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+            }
+            a{
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body style="background:#f5f6fa; padding: 20px;">
@@ -18,10 +35,11 @@
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h1>📦 Painel de Pedidos</h1>
-            <div>
-                <a href="/painel.php" style="margin-right: 15px; color: #666; text-decoration: none;">Voltar ao Início</a>
-                <button onclick="window.print()" class="btn-imprimir">🖨️ Imprimir Lista</button>
-            </div>
+        </div>
+        
+        <div class="botoes-topo">
+            <a href="/app/Views/admin/painel.php" style="margin-right: 15px; color: #666; text-decoration: none;">Voltar ao Início</a>
+            <button onclick="window.print()" class="btn-imprimir">🖨️ Imprimir Lista</button>
         </div>
 
         <?php if (empty($lista_pedidos)): ?>
@@ -29,7 +47,12 @@
         <?php else: ?>
             
             <?php foreach ($lista_pedidos as $pedido): ?>
-                <div class="card-pedido">
+                <?php 
+                
+                $classe_impressao = (isset($pedido['status']) && $pedido['status'] == 'Entregue ✅') ? 'esconder-na-impressao' : '';
+                ?>
+                
+                <div class="card-pedido <?php echo $classe_impressao; ?>">
                     
                     <div class="card-header">
                         <div>
@@ -53,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="lista-itens">
+                    <div class="lista-itens" style="margin-bottom: 15px;">
                         <strong>Itens do Pedido:</strong>
                         <ul style="padding: 0; margin-top: 10px;">
                             <?php foreach ($pedido['itens'] as $item): ?>
@@ -66,17 +89,15 @@
                         </ul>
                     </div>
 
-                    <div style="text-align: right;">
-                            <h2 style="margin: 0; color: #2e7d32;">R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></h2>
-                            
-                            <p style="margin: 5px 0 10px 0; font-weight: bold; color: <?php echo (isset($pedido['status']) && $pedido['status'] == 'Entregue ✅') ? '#2e7d32' : '#E53935'; ?>">
-                                Status: <?php echo $pedido['status'] ?? 'Pendente ⏳'; ?>
-                            </p>
-                            
-                            <?php if (!isset($pedido['status']) || $pedido['status'] != 'Entregue ✅'): ?>
-                                <a href="/app/Controllers/marcar_entregue.php?id=<?php echo $pedido['id']; ?>" style="background: #2196F3; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: bold;">📦 Marcar Entregue</a>
-                            <?php endif; ?>
-                        </div>
+                    <div style="text-align: right; border-top: 1px solid #eee; padding-top: 10px;">
+                        <p style="margin: 5px 0 10px 0; font-weight: bold; color: <?php echo (isset($pedido['status']) && $pedido['status'] == 'Entregue ✅') ? '#2e7d32' : '#E53935'; ?>">
+                            Status: <?php echo $pedido['status'] ?? 'Pendente ⏳'; ?>
+                        </p>
+                        
+                        <?php if (!isset($pedido['status']) || $pedido['status'] != 'Entregue ✅'): ?>
+                            <a href="/app/Controllers/marcar_entregue.php?id=<?php echo $pedido['id']; ?>" style="background: #2196F3; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: bold;">📦 Marcar Entregue</a>
+                        <?php endif; ?>
+                    </div>
 
                 </div>
             <?php endforeach; ?>

@@ -7,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $db = $database->getConnection();
     $usuario_model = new Usuario($db);
 
-    // 1. Recebe os dados do formulário
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $senha = $_POST['senha'];
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // 3. Tenta salvar no banco
     if ($usuario_model->cadastrar($nome, $email, $senha_hash, $telefone, $rua, $numero, $bairro, $cidade)) {
-        // Se deu certo, redireciona para o login com aviso de sucesso
+        
         echo "<script>
                 alert('Conta criada com sucesso! Faça login para continuar.');
                 window.location.href = '/Projeto/app/Views/login.php';

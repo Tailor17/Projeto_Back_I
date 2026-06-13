@@ -10,17 +10,19 @@ if (isset($_SESSION['carrinho'])) {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>TDY Morangos - Cardápio da Sexta</title>
+    <title>TDY Morangos - Cardápio</title>
     <link rel="stylesheet" href="/public/css/style.css">
     <style>
-        .vitrine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; padding: 0 20px; }
-        .produto-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between;}
+        .vitrine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 40px; padding: 0 20px; }
+        .produto-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; display: flex; flex-direction: column; gap: 0; text-align: left; }
         .produto-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
-        .produto-img { width: 100%; height: 220px; object-fit: cover; }
-        .produto-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .produto-nome { font-size: 22px; color: #333; margin-bottom: 10px; }
-        .produto-preco { font-size: 24px; font-weight: bold; color: #E53935; display: block; margin-bottom: 15px; }
-        .btn-comprar { display: inline-block; background: #2e7d32; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; margin-top: auto; }
+        .produto-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+        .produto-info { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; flex: 1; min-height: 100%; }
+        .produto-details { display: flex; flex-direction: column; gap: 12px; }
+        .produto-nome { font-size: 22px; color: #333; margin-bottom: 0; }
+        .produto-preco { font-size: 24px; font-weight: bold; color: #E53935; display: block; margin-bottom: 0; }
+        .produto-actions { margin-top: 20px; display: flex; justify-content: center; }
+        .btn-comprar { display: inline-flex; align-items: center; justify-content: center; background: #2e7d32; color: white; padding: 12px 16px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; width: 100%; max-width: 220px; }
         .btn-comprar:hover { background: #1b5e20; }
         .header-vitrine { background-color: #E53935; color: white; padding: 40px 20px; text-align: center; position: relative; }
         .btn-admin { position: absolute; top: 20px; right: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-size: 14px;}
@@ -29,6 +31,14 @@ if (isset($_SESSION['carrinho'])) {
         .btn-editar:hover { background: white; color: #E53935; }
         .btn-login { display: inline-block; margin-left: 12px; color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
         .btn-login:hover { background: white; color: #E53935; }
+        @media (max-width: 900px) {
+            .vitrine-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        }
+        @media (max-width: 720px) {
+            .vitrine-grid { grid-template-columns: 1fr; gap: 18px; }
+            .produto-card { flex-direction: column; }
+            .produto-img { width: 100%; height: 220px; min-width: auto; }
+        }
     </style>
 </head>
 <body style="background-color: #f5f6fa; font-family: Arial, sans-serif; margin: 0;">
@@ -78,11 +88,39 @@ if (isset($_SESSION['carrinho'])) {
                         <?php endif; ?>
                         
                         <div class="produto-info">
-                            <h2 class="produto-nome"><?php echo ucwords(strtolower($item['nome_fruta'])); ?></h2>
-                            <span class="produto-preco">R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></span>
-                            <a href="/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">
-                                🛒 Adicionar ao Carrinho
-                            </a>
+                            <div class="produto-details">
+                                <h2 class="produto-nome"><?php echo ucwords(strtolower($item['nome_fruta'])); ?></h2>
+                                <span class="produto-preco">R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></span>
+                                <?php 
+                                    // Muda a cor e o ícone dependendo do status
+                                    if ($item['previsao'] == 'Disponível') {
+                                        $cor_status = '#2e7d32'; // Verde
+                                        $icone_status = '✅';
+                                    } elseif ($item['previsao'] == 'Sem previsão') {
+                                        $cor_status = '#E53935'; // Vermelho
+                                        $icone_status = '🚫';
+                                    } else {
+                                        $cor_status = '#FF9800'; // Laranja (Para datas)
+                                        $icone_status = '⏳';
+                                    }
+                                    ?>
+                                    
+                                    <p style="color: <?php echo $cor_status; ?>; font-weight: bold; font-size: 14px; margin: 10px 0;">
+                                        <?php echo $icone_status . ' ' . $item['previsao']; ?>
+                                    </p>
+
+                                    <?php if ($item['previsao'] == 'Disponível'): ?>
+                                        <a href="/Projeto/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">Adicionar ao Carrinho</a>
+                                    <?php else: ?>
+                                        <button disabled style="background: #ccc; color: #666; width: 100%; padding: 10px; border: none; border-radius: 4px; cursor: not-allowed; font-weight: bold;">Indisponível no momento</button>
+                                    <?php endif; ?>
+                            
+                            <div class="produto-actions">
+                                <a href="/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">
+                                    🛒 Adicionar ao Carrinho
+                                </a>
+                            </div>
+                            </div>
                         </div>
                     </div>
 

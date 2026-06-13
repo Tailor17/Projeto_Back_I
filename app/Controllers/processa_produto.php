@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if($produto->cadastrar()) {
                 echo "<script>
                         alert('Produto cadastrado com sucesso!');
-                        window.location.href = '/app/Views/admin/painel.php';
+                        window.location.href = '/app/Controllers/listar_produtos.php';
                       </script>";
             } else {
                 echo "Erro ao salvar no banco de dados.";
@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<script>alert('Erro ao fazer upload da imagem.'); history.back();</script>";
         }
     } else {
+
         echo "<script>alert('Selecione uma imagem válida.'); history.back();</script>";
     }
 }

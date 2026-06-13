@@ -24,6 +24,12 @@ if($usuario->atualizarPerfil(
     $nova_senha
 )) {
     $_SESSION['usuario_nome'] = $_POST['nome']; // Atualiza o nome na sessão também
+    // Atualiza telefone e endereço na sessão para refletir mudanças no pedido
+    $_SESSION['usuario_telefone'] = $_POST['telefone'] ?? '';
+    $_SESSION['usuario_rua'] = $_POST['rua'] ?? '';
+    $_SESSION['usuario_numero'] = $_POST['numero'] ?? '';
+    $_SESSION['usuario_bairro'] = $_POST['bairro'] ?? '';
+    $_SESSION['usuario_cidade'] = $_POST['cidade'] ?? '';
     echo "<script>alert('Perfil atualizado!'); window.location.href = '/index.php';</script>";
 } else {
     echo "<script>alert('Erro ao atualizar.'); history.back();</script>";

@@ -30,7 +30,7 @@
         
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>Frutas Cadastradas</h2>
-            <a href="/app/Views/admin/produto_cadastrar.php" class="btn-novo">+ Nova Fruta</a>
+            <a href="/app/Views/admin/produto_cadastrar.php" class="btn-novo">+ Novo Produto</a>
         </div>
 
         <table>
