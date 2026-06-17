@@ -11,7 +11,8 @@
         .lista-itens li { margin-bottom: 5px; list-style-type: none; }
         .btn-imprimir { background: #333; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; float: right; margin-bottom: 20px;}
         .botoes-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        
+        .btn-voltar { display: inline-block; margin-left: 12px; color: #333; border: 1px solid #333; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
+        .btn-voltar:hover { background: #333; color: white; }
         @media print {
             .esconder-na-impressao { 
                 display: none !important; 
@@ -38,7 +39,7 @@
         </div>
         
         <div class="botoes-topo">
-            <a href="/app/Views/admin/painel.php" style="margin-right: 15px; color: #666; text-decoration: none;">Voltar ao Início</a>
+            <a href="/app/Views/admin/painel.php" class="btn-voltar">Voltar ao Início</a>
             <button onclick="window.print()" class="btn-imprimir">🖨️ Imprimir Lista</button>
         </div>
 

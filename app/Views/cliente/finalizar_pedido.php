@@ -83,7 +83,7 @@ $endereco_padrao = $dados_usuario['rua'] . ", " . $dados_usuario['numero'] . " -
                         </div>
                         <div style="flex: 1;">
                             <label style="display:block; font-size: 14px; margin-bottom: 5px; color: #333;">Cidade</label>
-                            <input type="text" id="nova_cidade" name="nova_cidade" value="Pelotas" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <input type="text" id="nova_cidade" name="nova_cidade" value="São Lourenço do Sul" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
                         </div>
                     </div>
                 </div>

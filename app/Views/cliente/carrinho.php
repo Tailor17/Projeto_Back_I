@@ -44,10 +44,9 @@ if (!empty($_SESSION['carrinho'])) {
                 <thead>
                     <tr style="border-bottom: 2px solid #eee; text-align: left;">
                         <th style="padding: 10px;">Produto</th>
-                        <th style="padding: 10px;">Qtd</th>
+                        <th style="padding: 10px;">Quantidade</th>
                         <th style="padding: 10px;">Preço Unit.</th>
                         <th style="padding: 10px;">Subtotal</th>
-                        <th style="padding: 10px;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -13,9 +13,15 @@
         .img-miniatura { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
         .btn-novo { display: inline-block; background: #2e7d32; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-weight: bold; }
         .btn-novo:hover { background: #1b5e20; }
-        .btn-acao { padding: 5px 10px; border-radius: 4px; text-decoration: none; color: white; font-size: 14px; margin-right: 5px; }
+        
+        /* Classes dos botões de ação na tabela */
+        .btn-acao { padding: 5px 10px; border-radius: 4px; text-decoration: none; color: white; font-size: 14px; margin-right: 5px; display: inline-block; }
         .btn-editar { background-color: #f39c12; }
         .btn-excluir { background-color: #c0392b; }
+        
+        /* NOVAS CLASSES PARA O INTERRUPTOR AUTÔNOMO */
+        .btn-pausar { background-color: #7f8c8d; } /* Cinza para pausar */
+        .btn-ativar { background-color: #2e7d32; } /* Verde para ativar */
     </style>
 </head>
 <body class="login-page">
@@ -49,8 +55,14 @@
                         <td>
                             <img src="/public/uploads/produtos/<?php echo $item['foto_produto']; ?>" alt="Foto" class="img-miniatura">
                         </td>
-                        <td><?php echo $item['nome_fruta']; ?></td>
+                        <td>
+                            <strong><?php echo $item['nome_fruta']; ?></strong><br>
+                            <small style="color: <?php echo (isset($item['previsao']) && $item['previsao'] == 'Disponível') ? '#2e7d32' : '#E53935'; ?>">
+                                Status: <?php echo $item['previsao'] ?? 'Disponível'; ?>
+                            </small>
+                        </td>
                         <td>R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></td>
+                        
                         <td>
                             <a href="/app/Controllers/carregar_edicao.php?id=<?php echo $item['id']; ?>" class="btn-acao btn-editar">Editar</a>
                             <a href="/app/Controllers/excluir_produto.php?id=<?php echo $item['id']; ?>" class="btn-acao btn-excluir" onclick="return confirm('Tem certeza que deseja apagar esta fruta do sistema?');">Excluir</a>

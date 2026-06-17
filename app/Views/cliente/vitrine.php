@@ -13,7 +13,7 @@ if (isset($_SESSION['carrinho'])) {
     <title>TDY Morangos - Cardápio</title>
     <link rel="stylesheet" href="/public/css/style.css">
     <style>
-        .vitrine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 40px; padding: 0 20px; }
+        .vitrine-grid { display: grid; grid-template-columns: repeat(auto-fill, 250px); gap: 20px; max-width: 1000px; margin: 0 auto; justify-content: center; }
         .produto-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; display: flex; flex-direction: column; gap: 0; text-align: left; }
         .produto-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
         .produto-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
@@ -29,8 +29,13 @@ if (isset($_SESSION['carrinho'])) {
         .btn-admin:hover { background: white; color: #E53935; }
         .btn-editar { position: absolute; top: 60px; right: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-size: 14px;}
         .btn-editar:hover { background: white; color: #E53935; }
-        .btn-login { display: inline-block; margin-left: 12px; color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
+        .user-info { position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; color: white; }
+        .user-info span { color: white; }
+        .btn-login { color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
         .btn-login:hover { background: white; color: #E53935; }
+        .btn-previsoes { display: inline-block; color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
+        .btn-previsoes:hover { background: white; color: #E53935; }
+
         @media (max-width: 900px) {
             .vitrine-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
         }
@@ -43,11 +48,11 @@ if (isset($_SESSION['carrinho'])) {
 </head>
 <body style="background-color: #f5f6fa; font-family: Arial, sans-serif; margin: 0;">
 
-        <header class="header-vitrine">
+        <header class="header-vitrine" style="margin-bottom: 40px;">
             <h1>🍓 TDY MORANGOS 🍓</h1>
             <p>Produtos frescos selecionados direto para a sua casa!</p>
 
-            <div class="user-info" style="position: absolute; top: 20px; left: 20px; display: flex; align-items: center; gap: 10px;">
+            <div class="user-info">
                 <?php if (!empty($_SESSION['usuario_nome'])): ?>
                     <span>Olá, <?php echo $_SESSION['usuario_nome']; ?></span>
                     <a href="/app/Controllers/logout.php" class="btn-login">Sair</a>
@@ -55,6 +60,7 @@ if (isset($_SESSION['carrinho'])) {
                     <span>Olá, visitante</span>
                     <a href="/app/Views/login.php" class="btn-login">Login</a>
                 <?php endif; ?>
+                <a href="/app/Controllers/vitrine_previsoes.php" class="btn-previsoes">Itens Indisponíveis</a>
             </div>
             
             <a href="/app/Views/cliente/carrinho.php" style="position: fixed; bottom: 20px; left: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; display: flex; align-items: center; gap: 8px; background: rgba(192, 52, 52, 0.7);">
@@ -73,6 +79,8 @@ if (isset($_SESSION['carrinho'])) {
             <?php endif; ?>
 
                 <a href="/app/Controllers/carregar_edicao_usuario.php" class="btn-editar">Editar perfil</a>
+
+            
         </header>
     <main style="max-width: 1200px; margin: 0 auto; padding-bottom: 60px;">
         
@@ -110,16 +118,10 @@ if (isset($_SESSION['carrinho'])) {
                                     </p>
 
                                     <?php if ($item['previsao'] == 'Disponível'): ?>
-                                        <a href="/Projeto/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">Adicionar ao Carrinho</a>
+                                        <a href="/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">Adicionar ao Carrinho</a>
                                     <?php else: ?>
                                         <button disabled style="background: #ccc; color: #666; width: 100%; padding: 10px; border: none; border-radius: 4px; cursor: not-allowed; font-weight: bold;">Indisponível no momento</button>
                                     <?php endif; ?>
-                            
-                            <div class="produto-actions">
-                                <a href="/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">
-                                    🛒 Adicionar ao Carrinho
-                                </a>
-                            </div>
                             </div>
                         </div>
                     </div>

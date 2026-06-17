@@ -77,29 +77,27 @@ class Produto {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 // =======================================================
-    // MÉTODO 7: ZERAR TODA A DISPONIBILIDADE DA SEMANA
+    // MÉTODO 7: ZERAR TODA A DISPONIBILIDADE DA SEMANA E PREVISÃO
     // =======================================================
     public function zerarDisponibilidade() {
-        $query = "UPDATE " . $this->table_name . " SET disponivel_na_semana = 0";
+        // AUTOMAÇÃO: Tira do cardápio (0) E já coloca status de falta ('Sem previsão')
+        $query = "UPDATE " . $this->table_name . " SET disponivel_na_semana = 0, previsao = 'Sem previsão'";
         $stmt = $this->conn->prepare($query);
         return $stmt->execute();
     }
 
     // =======================================================
-    // MÉTODO 8: ATIVAR PRODUTOS SELECIONADOS NA SEMANA
+    // MÉTODO 8: ATIVAR PRODUTOS SELECIONADOS NA SEMANA E PREVISÃO
     // =======================================================
     public function atualizarDisponibilidade($ids_array) {
-        // Se nenhum produto foi marcado, não faz nada (já estão todos zerados)
         if(empty($ids_array)) return true;
 
-        // Cria os "pontos de interrogação" para a query baseada na quantidade de produtos marcados
-        // Exemplo: se marcou 3 frutas, fica "?, ?, ?"
         $placeholders = implode(',', array_fill(0, count($ids_array), '?'));
 
-        $query = "UPDATE " . $this->table_name . " SET disponivel_na_semana = 1 WHERE id IN ($placeholders)";
+        // AUTOMAÇÃO: Coloca no cardápio (1) E limpa o status de falta ('Disponível')
+        $query = "UPDATE " . $this->table_name . " SET disponivel_na_semana = 1, previsao = 'Disponível' WHERE id IN ($placeholders)";
         $stmt = $this->conn->prepare($query);
 
-        // O PDO é inteligente e substitui os "?" pelos IDs que vieram no array
         return $stmt->execute($ids_array);
     }
 
@@ -112,4 +110,56 @@ class Produto {
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }}
+    }
+    // =======================================================
+    // MÉTODO 10: LISTAR APENAS PRODUTOS INDISPONÍVEIS / COM PREVISÃO
+    // =======================================================
+    public function listarIndisponiveis() {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE previsao != 'Disponível'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // =======================================================
+    // MÉTODO 11: ATUALIZAR A PREVISÃO NO PAINEL ADMIN
+    // =======================================================
+    public function atualizarPrevisao($id, $nova_previsao) {
+        $query = "UPDATE " . $this->table_name . " SET previsao = :previsao WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':previsao', $nova_previsao);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+    // =======================================================
+    // MÉTODO 12: INTERRUPTOR AUTÔNOMO DE VENDAS
+    // =======================================================
+    public function alternarDisponibilidade($id, $previsao_atual) {
+        // A regra de negócio autônoma que você definiu:
+        if ($previsao_atual == 'Disponível') {
+            $novo_status = 'Sem previsão'; // Sai da vitrine e vai para a aba de espera
+        } else {
+            $novo_status = 'Disponível'; // Volta para a vitrine principal
+        }
+
+        $query = "UPDATE " . $this->table_name . " SET previsao = :novo_status WHERE id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':novo_status', $novo_status);
+        $stmt->bindParam(':id', $id);
+        
+        return $stmt->execute();
+    }
+
+    // =======================================================
+    // MÉTODO 14: LISTAR APENAS PRODUTOS FORA DO CARDÁPIO
+    // =======================================================
+    public function listarForaDoCardapio() {
+        $query = "SELECT id, nome_fruta, previsao FROM " . $this->table_name . " WHERE disponivel_na_semana = 0";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    }

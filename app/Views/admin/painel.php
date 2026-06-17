@@ -75,6 +75,12 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
                 <a href="/app/Controllers/listar_pedidos.php" class="btn-admin">Ver Pedidos</a>
             </div>
 
+            <div class="card-action">
+                <h3>🗓️ Previsão de Safra</h3>
+                <p>Definir datas de retorno.</p>
+                <a href="/app/Controllers/carregar_previsoes.php" class="btn-admin">Gerenciar Datas</a>
+            </div>       
+
         </section>
     </main>
 
