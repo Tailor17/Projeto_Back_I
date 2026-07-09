@@ -46,12 +46,10 @@ class Produto {
     // [4] ATUALIZAR (Update)
     public function atualizar($id, $nome_fruta, $preco, $foto_produto) {
         
-        // A query limpa, atualizando os 3 campos sempre (já que o Controller garante qual é a foto certa)
         $query = "UPDATE " . $this->table_name . " SET nome_fruta = :nome, preco = :preco, foto_produto = :foto WHERE id = :id";
         
         $stmt = $this->conn->prepare($query);
         
-        // Substituindo as tags pelas variáveis que vieram do Controller
         $stmt->bindParam(':nome', $nome_fruta);
         $stmt->bindParam(':preco', $preco);
         $stmt->bindParam(':foto', $foto_produto);
@@ -80,7 +78,7 @@ class Produto {
     // MÉTODO 7: ZERAR TODA A DISPONIBILIDADE DA SEMANA E PREVISÃO
     // =======================================================
     public function zerarDisponibilidade() {
-        // AUTOMAÇÃO: Tira do cardápio (0) E já coloca status de falta ('Sem previsão')
+  
         $query = "UPDATE " . $this->table_name . " SET disponivel_na_semana = 0, previsao = 'Sem previsão'";
         $stmt = $this->conn->prepare($query);
         return $stmt->execute();
@@ -94,7 +92,6 @@ class Produto {
 
         $placeholders = implode(',', array_fill(0, count($ids_array), '?'));
 
-        // AUTOMAÇÃO: Coloca no cardápio (1) E limpa o status de falta ('Disponível')
         $query = "UPDATE " . $this->table_name . " SET disponivel_na_semana = 1, previsao = 'Disponível' WHERE id IN ($placeholders)";
         $stmt = $this->conn->prepare($query);
 

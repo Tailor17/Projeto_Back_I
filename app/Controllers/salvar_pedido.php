@@ -18,7 +18,7 @@ $db = $database->getConnection();
 $produto_model = new Produto($db);
 $pedido_model = new Pedido($db);
 
-// 2. Calcula APENAS o valor total lendo a sessão
+// 2. Calcula apenas o valor total lendo a sessão
 $valor_total = 0;
 if (!empty($_SESSION['carrinho'])) {
     foreach ($_SESSION['carrinho'] as $id => $qtd) {

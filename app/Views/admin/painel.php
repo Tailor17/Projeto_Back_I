@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Proteção básica: Se não for ADM, volta pro login
 if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) {
     header("Location: ../login.php");
     exit;

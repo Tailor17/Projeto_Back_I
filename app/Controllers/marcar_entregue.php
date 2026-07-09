@@ -8,11 +8,10 @@ if (isset($_GET['id'])) {
     $db = $database->getConnection();
     $pedido_model = new Pedido($db);
     
-    // Atualiza o status para Entregue
+
     $pedido_model->atualizarStatus($_GET['id'], 'Entregue ✅');
 }
 
-// Volta para a tela de pedidos automaticamente
 header("Location: /app/Controllers/listar_pedidos.php");
 exit;
 ?>

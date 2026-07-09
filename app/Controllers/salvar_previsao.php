@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['produto_id'])) {
 
     $id = $_POST['produto_id'];
 
-    // Verifica se clicou no botão de voltar para "Sem previsão"
+   
     if (isset($_POST['acao']) && $_POST['acao'] == 'sem_previsao') {
         $nova_previsao = "Sem previsão";
     } else {
-        // Se não, salva a data do calendário
+        
         $data_formatada = date('d/m/Y', strtotime($_POST['data_previsao']));
         $nova_previsao = "Previsto para: " . $data_formatada;
     }

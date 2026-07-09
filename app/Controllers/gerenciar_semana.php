@@ -11,9 +11,9 @@ $database = new Database();
 $db = $database->getConnection();
 $produto = new Produto($db);
 
-// Pega todas as frutas para mostrar na tela
+
 $lista_produtos = $produto->listarTodos();
 
-// Chama a View
+
 require_once '../Views/admin/selecionar_semana.php';
 ?>
