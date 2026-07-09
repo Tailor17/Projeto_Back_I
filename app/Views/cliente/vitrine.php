@@ -22,19 +22,19 @@ if (isset($_SESSION['carrinho'])) {
         .produto-nome { font-size: 22px; color: #333; margin-bottom: 0; }
         .produto-preco { font-size: 24px; font-weight: bold; color: #E53935; display: block; margin-bottom: 0; }
         .produto-actions { margin-top: 20px; display: flex; justify-content: center; }
-        .btn-comprar { display: inline-flex; align-items: center; justify-content: center; background: #2e7d32; color: white; padding: 12px 16px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; width: 100%; max-width: 220px; }
+        .btn-comprar { display: inline-flex; align-items: center; justify-content: center; background: #2e7d32; color: white; padding: 12px 16px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; width: 100%; max-width: 220px; border: none; cursor: pointer; }
         .btn-comprar:hover { background: #1b5e20; }
         .header-vitrine { background-color: #E53935; color: white; padding: 40px 20px; text-align: center; position: relative; }
         .btn-admin { position: absolute; top: 20px; right: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-size: 14px;}
         .btn-admin:hover { background: white; color: #E53935; }
-        .btn-editar { position: absolute; top: 60px; right: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-size: 14px;}
+        .btn-editar { position: absolute; top: 60px; right: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; margin-top: 10px;}
         .btn-editar:hover { background: white; color: #E53935; }
         .user-info { position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; color: white; }
         .user-info span { color: white; }
-        .btn-login { color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
+        .btn-login { color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px;}
         .btn-login:hover { background: white; color: #E53935; }
-        .btn-previsoes { display: inline-block; color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px; }
-        .btn-previsoes:hover { background: white; color: #E53935; }
+        .btn-previsoes { display: inline-block; color: white; border: 1px solid white; padding: 8px 12px; text-decoration: none; border-radius: 6px; font-size: 14px;}
+        .btn-previsoes:hover { background: white; color: #E53935;}
 
         @media (max-width: 900px) {
             .vitrine-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
@@ -63,13 +63,11 @@ if (isset($_SESSION['carrinho'])) {
                 <a href="/app/Controllers/vitrine_previsoes.php" class="btn-previsoes">Itens Indisponíveis</a>
             </div>
             
-            <a href="/app/Views/cliente/carrinho.php" style="position: fixed; bottom: 20px; left: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; display: flex; align-items: center; gap: 8px; background: rgba(192, 52, 52, 0.7);">
+            <a id="contador-carrinho-container" href="/app/Views/cliente/carrinho.php" style="position: fixed; bottom: 20px; left: 20px; color: white; border: 1px solid white; padding: 8px 15px; text-decoration: none; border-radius: 6px; display: flex; align-items: center; gap: 8px; background: rgba(192, 52, 52, 0.7); z-index: 1000;">
                 🛒 Carrinho 
-                <?php if($total_itens > 0): ?>
-                    <span style="background: #fff; color: #E53935; padding: 2px 8px; border-radius: 50%; font-weight: bold; font-size: 14px;">
-                        <?php echo $total_itens; ?>
-                    </span>
-                <?php endif; ?>
+                <span id="contador-numero" style="background: #fff; color: #E53935; padding: 2px 8px; border-radius: 50%; font-weight: bold; font-size: 14px; display: <?php echo ($total_itens > 0) ? 'inline-block' : 'none'; ?>;">
+                    <?php echo $total_itens; ?>
+                </span>
             </a>
 
             <?php if (isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1): ?>
@@ -79,7 +77,6 @@ if (isset($_SESSION['carrinho'])) {
             <?php endif; ?>
 
                 <a href="/app/Controllers/carregar_edicao_usuario.php" class="btn-editar">Editar perfil</a>
-
             
         </header>
     <main style="max-width: 1200px; margin: 0 auto; padding-bottom: 60px;">
@@ -100,15 +97,14 @@ if (isset($_SESSION['carrinho'])) {
                                 <h2 class="produto-nome"><?php echo ucwords(strtolower($item['nome_fruta'])); ?></h2>
                                 <span class="produto-preco">R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></span>
                                 <?php 
-                                    // Muda a cor e o ícone dependendo do status
                                     if ($item['previsao'] == 'Disponível') {
-                                        $cor_status = '#2e7d32'; // Verde
+                                        $cor_status = '#2e7d32'; 
                                         $icone_status = '✅';
                                     } elseif ($item['previsao'] == 'Sem previsão') {
-                                        $cor_status = '#E53935'; // Vermelho
+                                        $cor_status = '#E53935'; 
                                         $icone_status = '🚫';
                                     } else {
-                                        $cor_status = '#FF9800'; // Laranja (Para datas)
+                                        $cor_status = '#FF9800'; 
                                         $icone_status = '⏳';
                                     }
                                     ?>
@@ -118,7 +114,7 @@ if (isset($_SESSION['carrinho'])) {
                                     </p>
 
                                     <?php if ($item['previsao'] == 'Disponível'): ?>
-                                        <a href="/app/Controllers/adicionar_carrinho.php?id=<?php echo $item['id']; ?>" class="btn-comprar">Adicionar ao Carrinho</a>
+                                        <button data-id="<?php echo $item['id']; ?>" class="btn-comprar btn-ajax-carrinho">Adicionar ao Carrinho</button>
                                     <?php else: ?>
                                         <button disabled style="background: #ccc; color: #666; width: 100%; padding: 10px; border: none; border-radius: 4px; cursor: not-allowed; font-weight: bold;">Indisponível no momento</button>
                                     <?php endif; ?>
@@ -137,5 +133,56 @@ if (isset($_SESSION['carrinho'])) {
 
     </main>
 
+    <script>
+    document.querySelectorAll('.btn-ajax-carrinho').forEach(botao => {
+        botao.addEventListener('click', function() {
+            const produtoId = this.getAttribute('data-id');
+            
+            // Feedback visual rápido para o cliente
+            const textoOriginal = this.innerText;
+            this.innerText = "Adicionando...";
+            this.disabled = true;
+
+            // Faz o fetch enviando para o mesmo controlador que você já usava, mas em segundo plano
+            fetch(`/app/Controllers/adicionar_carrinho.php?id=${produtoId}`, {
+                method: 'GET' // Como seu arquivo original recebe via URL, mantemos o GET
+            })
+            .then(response => {
+                // Se o seu script PHP redirecionar, o Fetch lida com isso e diz que deu ok.
+                if (response.ok) {
+                    // Atualiza o texto do botão com sucesso
+                    this.innerText = "Adicionado! 🍓";
+                    this.style.backgroundColor = "#155724"; // Verde escuro de sucesso
+                    
+                    // Atualiza o número do carrinho flutuante na tela
+                    const contadorNum = document.getElementById('contador-numero');
+                    let quantidadeAtual = parseInt(contadorNum.innerText) || 0;
+                    quantidadeAtual += 1;
+                    
+                    contadorNum.innerText = quantidadeAtual;
+                    contadorNum.style.display = 'inline-block'; // Garante que vai aparecer se estava oculto
+
+                    // Restaura o botão após 1.5 segundos para o cliente poder adicionar mais se quiser
+                    setTimeout(() => {
+                        this.innerText = textoOriginal;
+                        this.style.backgroundColor = "#2e7d32";
+                        this.disabled = false;
+                    }, 1500);
+
+                } else {
+                    alert("Erro ao adicionar produto.");
+                    this.innerText = textoOriginal;
+                    this.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error("Erro:", error);
+                alert("Ocorreu um erro de conexão.");
+                this.innerText = textoOriginal;
+                this.disabled = false;
+            });
+        });
+    });
+    </script>
 </body>
 </html>
