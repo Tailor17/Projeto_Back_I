@@ -138,31 +138,29 @@ if (isset($_SESSION['carrinho'])) {
         botao.addEventListener('click', function() {
             const produtoId = this.getAttribute('data-id');
             
-            // Feedback visual rápido para o cliente
+            
             const textoOriginal = this.innerText;
             this.innerText = "Adicionando...";
             this.disabled = true;
 
-            // Faz o fetch enviando para o mesmo controlador que você já usava, mas em segundo plano
+            // Faz o fetch enviando segundo plano
             fetch(`/app/Controllers/adicionar_carrinho.php?id=${produtoId}`, {
-                method: 'GET' // Como seu arquivo original recebe via URL, mantemos o GET
+                method: 'GET' 
             })
             .then(response => {
-                // Se o seu script PHP redirecionar, o Fetch lida com isso e diz que deu ok.
                 if (response.ok) {
-                    // Atualiza o texto do botão com sucesso
                     this.innerText = "Adicionado! 🍓";
                     this.style.backgroundColor = "#155724"; // Verde escuro de sucesso
                     
-                    // Atualiza o número do carrinho flutuante na tela
+                    
                     const contadorNum = document.getElementById('contador-numero');
                     let quantidadeAtual = parseInt(contadorNum.innerText) || 0;
                     quantidadeAtual += 1;
                     
                     contadorNum.innerText = quantidadeAtual;
-                    contadorNum.style.display = 'inline-block'; // Garante que vai aparecer se estava oculto
+                    contadorNum.style.display = 'inline-block'; 
 
-                    // Restaura o botão após 1.5 segundos para o cliente poder adicionar mais se quiser
+                    
                     setTimeout(() => {
                         this.innerText = textoOriginal;
                         this.style.backgroundColor = "#2e7d32";
