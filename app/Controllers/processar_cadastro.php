@@ -16,10 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bairro = $_POST['bairro'];
     $cidade = $_POST['cidade'];
 
-    // 2. Criptografa a senha para o banco de dados
+    
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-    // 3. Tenta salvar no banco
+
     if ($usuario_model->cadastrar($nome, $email, $senha_hash, $telefone, $rua, $numero, $bairro, $cidade)) {
         
         echo "<script>

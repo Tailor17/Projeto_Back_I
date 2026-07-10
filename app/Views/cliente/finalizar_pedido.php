@@ -13,7 +13,6 @@ $db = $database->getConnection();
 $usuario = new Usuario($db);
 $dados_usuario = $usuario->buscarPorId($_SESSION['usuario_id']);
 
-// Simulação: Buscando dados do banco (na prática, use seu Model Usuario)
 $nome_usuario = $_SESSION['usuario_nome'];
 $endereco_padrao = $dados_usuario['rua'] . ", " . $dados_usuario['numero'] . " - " . $dados_usuario['bairro'] . ", " . $dados_usuario['cidade']; // Isso viria do seu SELECT no banco
 ?>
@@ -27,7 +26,6 @@ $endereco_padrao = $dados_usuario['rua'] . ", " . $dados_usuario['numero'] . " -
     <script>
     function toggleEndereco(valor) {
         const campoNovo = document.getElementById('campo_novo_endereco');
-        // Lista dos novos campos que precisamos tornar obrigatórios
         const campos = ['nova_rua', 'novo_numero', 'novo_bairro']; 
         
         if (valor === 'novo') {

@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Verifica segurança
 if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) { 
     header("Location: /app/Views/login.php"); 
     exit; 

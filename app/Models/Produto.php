@@ -130,14 +130,13 @@ class Produto {
     }
 
     // =======================================================
-    // MÉTODO 12: INTERRUPTOR AUTÔNOMO DE VENDAS
+    // MÉTODO 12: INTERRUPTOR DE VENDAS
     // =======================================================
     public function alternarDisponibilidade($id, $previsao_atual) {
-        // A regra de negócio autônoma que você definiu:
         if ($previsao_atual == 'Disponível') {
-            $novo_status = 'Sem previsão'; // Sai da vitrine e vai para a aba de espera
+            $novo_status = 'Sem previsão'; 
         } else {
-            $novo_status = 'Disponível'; // Volta para a vitrine principal
+            $novo_status = 'Disponível';
         }
 
         $query = "UPDATE " . $this->table_name . " SET previsao = :novo_status WHERE id = :id";

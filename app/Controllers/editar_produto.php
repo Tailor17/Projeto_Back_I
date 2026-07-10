@@ -12,11 +12,9 @@ if (isset($_GET['id'])) {
     $db = $database->getConnection();
     $produto = new Produto($db);
     
-    // Busca os dados da fruta que você clicou
     $dados_produto = $produto->buscarPorId($_GET['id']);
     
     if($dados_produto) {
-        // Se achou, abre a tela de edição
         require_once '../Views/admin/produto_editar.php';
     } else {
         echo "<script>alert('Produto não encontrado!'); window.location.href='listar_produtos.php';</script>";

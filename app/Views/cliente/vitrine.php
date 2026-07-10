@@ -150,7 +150,7 @@ if (isset($_SESSION['carrinho'])) {
             .then(response => {
                 if (response.ok) {
                     this.innerText = "Adicionado! 🍓";
-                    this.style.backgroundColor = "#155724"; // Verde escuro de sucesso
+                    this.style.backgroundColor = "#155724";
                     
                     
                     const contadorNum = document.getElementById('contador-numero');

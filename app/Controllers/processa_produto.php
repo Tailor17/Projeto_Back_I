@@ -9,15 +9,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = $database->getConnection();
     $produto = new Produto($db);
 
-    // Pega os dados de texto
+   
     $produto->nome_fruta = $_POST['nome_fruta'];
     $produto->preco = $_POST['preco'];
 
-    // LÓGICA DE UPLOAD DE ARQUIVO (Requisito 4)
+    // LÓGICA DE UPLOAD DE ARQUIVO
     if(isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         
         $pasta_destino = "../../public/uploads/produtos/";
-        // Cria um nome único para a imagem para não sobrepor outras (Ex: 1698543_morango.jpg)
+        // Cria um nome único para a imagem para não sobrepor outras
         $nome_arquivo = time() . "_" . basename($_FILES["foto"]["name"]); 
         $caminho_completo = $pasta_destino . $nome_arquivo;
 

@@ -28,10 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['tipo_usuario'] = $usuario->tipo_usuario;
 
         if ($usuario->tipo_usuario == 1) {
-            // É o Dono (Admin) -> Vai para o Painel de Controle
+            
             header("Location: ../Views/admin/painel.php");
         } else {
-            // É Cliente (0) -> Vai para a Vitrine de Frutas
+        
             header("Location: /index.php");
         }
         exit;

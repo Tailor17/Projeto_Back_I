@@ -2,16 +2,14 @@
 
 class Usuario {
     private $conn;
-    private $table_name = "Usuarios"; // Deixei minúsculo para evitar o erro 1146
+    private $table_name = "Usuarios";
 
-    // Propriedades principais do objeto
     public $id;
     public $nome;
     public $email;
     public $senha;
     public $tipo_usuario;
     
-    // Propriedades de entrega
     public $telefone;
     public $rua;
     public $numero;
@@ -26,19 +24,19 @@ class Usuario {
     // MÉTODO 1: CADASTRAR (Novo cliente)
     // =======================================================
     public function cadastrar($nome, $email, $senha_hash, $telefone, $rua, $numero, $bairro, $cidade) {
-        // O tipo_usuario = 2 é fixo (Cliente)
+        
         $query = "INSERT INTO " . $this->table_name . " 
                   (nome, email, senha, telefone, rua, numero, bairro, cidade, tipo_usuario) 
                   VALUES (:nome, :email, :senha, :telefone, :rua, :numero, :bairro, :cidade, 2)";
         
         $stmt = $this->conn->prepare($query);
         
-        // Limpeza básica para evitar tags HTML no nome
+        
         $nome_limpo = htmlspecialchars(strip_tags($nome));
         
         $stmt->bindParam(':nome', $nome_limpo);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':senha', $senha_hash); // Recebe a senha já criptografada pelo Controller
+        $stmt->bindParam(':senha', $senha_hash);
         $stmt->bindParam(':telefone', $telefone);
         $stmt->bindParam(':rua', $rua);
         $stmt->bindParam(':numero', $numero);
@@ -52,7 +50,6 @@ class Usuario {
     // MÉTODO 2: FAZER LOGIN (SELECT e Validação)
     // =======================================================
     public function login($email_digitado, $senha_digitada) {
-        // Buscamos também os dados de endereço para poder usar na tela de entrega depois!
         $query = "SELECT id, nome, senha, tipo_usuario, telefone, rua, numero, bairro, cidade 
                   FROM " . $this->table_name . " 
                   WHERE email = ? LIMIT 0,1";
@@ -64,10 +61,8 @@ class Usuario {
         if($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Verifica se a senha digitada bate com o Hash salvo no banco
             if(password_verify($senha_digitada, $row['senha'])) {
                 
-                // Preenche as propriedades
                 $this->id = $row['id'];
                 $this->nome = $row['nome'];
                 $this->email = $row['email'];

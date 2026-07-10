@@ -16,7 +16,6 @@ if (isset($_GET['id'])) {
     $dados_produto = $produto->buscarPorId($_GET['id']);
 
     if($dados_produto) {
-        // Carrega a tela do formulário passando a variável $dados_produto
         require_once '../Views/admin/produto_editar.php';
     } else {
         echo "<script>alert('Produto não encontrado!'); window.location.href='/app/Controllers/listar_produtos.php';</script>";

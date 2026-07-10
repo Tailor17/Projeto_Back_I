@@ -1,5 +1,4 @@
 <?php
-// Pequena proteção extra caso alguém tente acessar a View direto pela URL
 if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 1) { header("Location: /app/Views/login.php"); exit; }
 ?>
 <!DOCTYPE html>

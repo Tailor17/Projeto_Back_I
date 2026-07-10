@@ -10,7 +10,7 @@ $produto_model = new Produto($db);
 $itens_carrinho = array();
 $total_pedido = 0;
 
-// Se houver algo no carrinho, buscamos os detalhes de cada produto no banco
+
 if (!empty($_SESSION['carrinho'])) {
     foreach ($_SESSION['carrinho'] as $id => $qtd) {
         $dados = $produto_model->buscarPorId($id);
@@ -72,11 +72,11 @@ if (!empty($_SESSION['carrinho'])) {
 
             <div style="text-align: right; border-top: 2px solid #eee; padding-top: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <a href="/app/Controllers/alterar_quantidade.php?acao=limpar" style="color: #666; font-size: 14px; text-decoration: none; font-weight:bold;">🧹 Limpar Carrinho</a>
-                    <h2 style="color: #333; margin: 0;">Total: <span style="color: #2e7d32;">R$ <?php echo number_format($total_pedido, 2, ',', '.'); ?></span></h2>
+                    <a href="/app/Controllers/alterar_quantidade.php?acao=limpar" style="color: #ffffff; font-size: 14px; text-decoration: none; font-weight:bold;">🧹 Limpar Carrinho</a>
+                    <h2 style="color: #ffffff; margin: 0;">Total: <span style="color: #2e7d32;">R$ <?php echo number_format($total_pedido, 2, ',', '.'); ?></span></h2>
                 </div>
                 
-                <a href="/index.php" style="color: #666; margin-right: 20px; text-decoration: none;">Continuar Comprando</a>
+                <a href="/index.php" class="btn-entrar" style="color: #E53935; margin-right: 20px; text-decoration: none;">Continuar Comprando</a>
                 <a href="/app/Views/cliente/finalizar_pedido.php" class="btn-entrar" style="display: inline-block; text-decoration: none; text-align: center; max-width: 280px; padding: 12px;">PROSSEGUIR PARA ENTREGA</a>
             </div>
         <?php endif; ?>
